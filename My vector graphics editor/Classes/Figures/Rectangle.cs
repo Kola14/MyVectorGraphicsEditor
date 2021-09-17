@@ -9,8 +9,8 @@ namespace MyVectorGraphicsEditor.Classes.Figures
     {
         public override int X { get; set; }
         public override int Y { get; set; }
-        public override int Width { get; set; }
-        public override int Height { get; set; }
+        public override int Width { get; set; } = 10;
+        public override int Height { get; set; } = 10;
 
         public override Figure Clone()
         {
@@ -19,7 +19,7 @@ namespace MyVectorGraphicsEditor.Classes.Figures
 
         public override void Draw(Graphics graphics)
         {
-            throw new NotImplementedException();
+            graphics.FillRectangle(new SolidBrush(Color.Black), X, Y, Width, Height);
         }
 
         public override void Move()

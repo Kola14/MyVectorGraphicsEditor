@@ -50,7 +50,8 @@ namespace MyVectorGraphicsEditor
             figure.X = e.X;
             figure.Y = e.Y;
 
-            RefreshPanel();
+            //RefreshPanel();
+
             figure.Draw(pnlDrawingPanel.CreateGraphics());
         }
 

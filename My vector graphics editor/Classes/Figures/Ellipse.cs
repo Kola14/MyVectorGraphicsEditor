@@ -9,8 +9,8 @@ namespace MyVectorGraphicsEditor.Classes.Figures
     {
         public override int X { get; set; }
         public override int Y { get; set; }
-        public override int Width { get; set; } = 10;
-        public override int Height { get; set; } = 10;
+        public override int Width { get; set; } = 100;
+        public override int Height { get; set; } = 100;
 
         public override Figure Clone()
         {

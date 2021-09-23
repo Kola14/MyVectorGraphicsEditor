@@ -6,6 +6,9 @@ namespace MyVectorGraphicsEditor.Classes.Figures
 {
     abstract class FigureCreator
     {
-        public abstract Figure Create();
+        public virtual Figure Create()
+        {
+            return null;
+        }
     }
 }

@@ -7,24 +7,17 @@ namespace MyVectorGraphicsEditor.Classes.Figures
 {
     class Ellipse : Figure
     {
-        public override int X { get; set; }
-        public override int Y { get; set; }
-        public override int Width { get; set; } = 100;
-        public override int Height { get; set; } = 100;
-
         public override Figure Clone()
         {
-            throw new NotImplementedException();
+            Ellipse e = new Ellipse();
+            e.Resize(Width, Height);
+            e.Move(X, Y);
+            return e;
         }
 
         public override void Draw(Graphics graphics)
         {
-            graphics.FillEllipse(new SolidBrush(Color.Black), X, Y, Width, Height);
-        }
-
-        public override void Move()
-        {
-            throw new NotImplementedException();
+            graphics.DrawEllipse(Pens.Black, X, Y, Width, Height);
         }
     }
 }

@@ -15,11 +15,21 @@ namespace MyVectorGraphicsEditor
 {
     public partial class MainForm : Form
     {
-        FigureCreator selectedFigureCreator;
+        FigureCreator selectedCreator;
+        Model model;
+        Figure selectedFigure;
+
+        Dictionary<string, FigureCreator> creators = new Dictionary<string, FigureCreator>();
 
         public MainForm()
         {
             InitializeComponent();
+
+            creators["Rectangle"] = RectangleCreator.GetInstance();
+            creators["Ellipse"] = EllipseCreator.GetInstance();
+            creators["Select"] = null;
+
+            model = new Model();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -27,39 +37,36 @@ namespace MyVectorGraphicsEditor
 
         }
 
-        private void btnRectangle_Click(object sender, EventArgs e)
-        {
-            selectedFigureCreator = RectangleCreator.GetInstance();
-        }
-
-        private void btnEllipse_Click(object sender, EventArgs e)
-        {
-            selectedFigureCreator = EllipseCreator.GetInstance();
-        }
-
-        private void btnSelect_Click(object sender, EventArgs e)
-        {
-            selectedFigureCreator = null;
-        }
-
         private void pnlDrawingPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            if (selectedFigureCreator is null) return;
+            Graphics graphics = pnlDrawingPanel.CreateGraphics();
 
-            Figure figure = selectedFigureCreator.Create();
-            figure.X = e.X;
-            figure.Y = e.Y;
+            if (selectedCreator != null)
+            {
+                Figure figure;
 
-            //RefreshPanel();
-
-            figure.Draw(pnlDrawingPanel.CreateGraphics());
+                figure = selectedCreator.Create();
+                figure.Move(e.X, e.Y);
+                model.Add(figure);
+            }
+            else
+            {
+                selectedFigure = model.Select(e.X, e.Y);
+            }
         }
 
-        private void RefreshPanel()
+        private void toolStripButton_Click(Object sender, EventArgs e)
         {
-            var graphics = pnlDrawingPanel.CreateGraphics();
+            string key = (sender as ToolStripButton).Text;
+            if (creators.Keys.Contains(key))
+            {
+                selectedCreator = creators[key];
+            }
+        }
 
-            graphics.FillRectangle(new SolidBrush(Color.White), 0, 0, pnlDrawingPanel.Width, pnlDrawingPanel.Height);
+        private void pnlDrawingPanel_Paint(object sender, PaintEventArgs e)
+        {
+            model.Draw(e.Graphics);
         }
     }
 }

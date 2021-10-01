@@ -34,7 +34,7 @@ namespace MyVectorGraphicsEditor
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+           
         }
 
         private void pnlDrawingPanel_MouseDown(object sender, MouseEventArgs e)
@@ -47,6 +47,7 @@ namespace MyVectorGraphicsEditor
 
                 figure = selectedCreator.Create();
                 figure.Move(e.X, e.Y);
+                figure.Resize(50,50);
                 model.Add(figure);
             }
             else
@@ -67,6 +68,7 @@ namespace MyVectorGraphicsEditor
         private void pnlDrawingPanel_Paint(object sender, PaintEventArgs e)
         {
             model.Draw(e.Graphics);
+            Refresh();
         }
     }
 }

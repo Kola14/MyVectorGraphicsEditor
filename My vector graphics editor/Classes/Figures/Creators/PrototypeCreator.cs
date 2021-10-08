@@ -8,11 +8,11 @@ namespace MyVectorGraphicsEditor.Classes.Figures
     {
         public Figure prototype { get; set; }
 
-        private static FigureCreator instance = null;
+        private static PrototypeCreator instance = null;
 
         private PrototypeCreator() { }
 
-        public static FigureCreator GetInstance()
+        public static PrototypeCreator GetInstance()
         {
             if (instance is null) instance = new PrototypeCreator();
 

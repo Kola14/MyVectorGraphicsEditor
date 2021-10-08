@@ -17,6 +17,11 @@ namespace MyVectorGraphicsEditor.Classes.Figures.Creators
             return instance;
         }
 
-        public override Figure Create() => new Ellipse();
+        public override Figure Create()
+        {
+            var e = new Ellipse();
+            e.Resize(50, 50);
+            return e;
+        }
     }
 }

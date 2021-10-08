@@ -31,11 +31,12 @@ namespace MyVectorGraphicsEditor
         /// </summary>
         private void InitializeComponent()
         {
-            this.pnlDrawingPanel = new DoubleBufferedPanel();
+            this.pnlDrawingPanel = new MyVectorGraphicsEditor.Classes.DoubleBufferedPanel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tlbSelect = new System.Windows.Forms.ToolStripButton();
             this.tsbRectangle = new System.Windows.Forms.ToolStripButton();
             this.tsbEllipse = new System.Windows.Forms.ToolStripButton();
+            this.btnSaveFigure = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,6 +49,7 @@ namespace MyVectorGraphicsEditor
             this.pnlDrawingPanel.TabIndex = 0;
             this.pnlDrawingPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlDrawingPanel_Paint);
             this.pnlDrawingPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlDrawingPanel_MouseDown);
+            this.pnlDrawingPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlDrawingPanel_MouseMove);
             // 
             // toolStrip1
             // 
@@ -89,11 +91,22 @@ namespace MyVectorGraphicsEditor
             this.tsbEllipse.Text = "Ellipse";
             this.tsbEllipse.Click += new System.EventHandler(this.toolStripButton_Click);
             // 
+            // btnSaveFigure
+            // 
+            this.btnSaveFigure.Location = new System.Drawing.Point(13, 39);
+            this.btnSaveFigure.Name = "btnSaveFigure";
+            this.btnSaveFigure.Size = new System.Drawing.Size(75, 23);
+            this.btnSaveFigure.TabIndex = 2;
+            this.btnSaveFigure.Text = "Save figure";
+            this.btnSaveFigure.UseVisualStyleBackColor = true;
+            this.btnSaveFigure.Click += new System.EventHandler(this.btnSaveFigure_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnSaveFigure);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.pnlDrawingPanel);
             this.Name = "MainForm";
@@ -114,6 +127,7 @@ namespace MyVectorGraphicsEditor
         private System.Windows.Forms.ToolStripButton tlbSelect;
         private System.Windows.Forms.ToolStripButton tsbRectangle;
         private System.Windows.Forms.ToolStripButton tsbEllipse;
+        private System.Windows.Forms.Button btnSaveFigure;
     }
 }
 

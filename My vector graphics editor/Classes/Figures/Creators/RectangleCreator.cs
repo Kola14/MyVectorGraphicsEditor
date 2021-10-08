@@ -17,6 +17,11 @@ namespace MyVectorGraphicsEditor.Classes.Figures.Creators
             return instance;
         }
 
-        public override Figure Create() => new Rectangle();
+        public override Figure Create()
+        {
+            var r = new Rectangle();
+            r.Resize(50, 50);
+            return r;
+        }
     }
 }

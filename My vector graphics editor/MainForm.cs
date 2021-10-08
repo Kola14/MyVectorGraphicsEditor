@@ -18,6 +18,8 @@ namespace MyVectorGraphicsEditor
         FigureCreator selectedCreator;
         Model model;
         Figure selectedFigure;
+        private int oldx, oldy;
+        private int newFigureNumber = 0;
 
         Dictionary<string, FigureCreator> creators = new Dictionary<string, FigureCreator>();
 
@@ -39,15 +41,10 @@ namespace MyVectorGraphicsEditor
 
         private void pnlDrawingPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            Graphics graphics = pnlDrawingPanel.CreateGraphics();
-
             if (selectedCreator != null)
             {
-                Figure figure;
-
-                figure = selectedCreator.Create();
+                var figure = selectedCreator.Create();
                 figure.Move(e.X, e.Y);
-                figure.Resize(50,50);
                 model.Add(figure);
             }
             else
@@ -58,10 +55,10 @@ namespace MyVectorGraphicsEditor
 
         private void toolStripButton_Click(Object sender, EventArgs e)
         {
-            string key = (sender as ToolStripButton).Text;
+            var key = (sender as ToolStripButton)?.Text;
             if (creators.Keys.Contains(key))
             {
-                selectedCreator = creators[key];
+                if (key != null) selectedCreator = creators[key];
             }
         }
 
@@ -69,6 +66,41 @@ namespace MyVectorGraphicsEditor
         {
             model.Draw(e.Graphics);
             Refresh();
+        }
+
+        private void btnSaveFigure_Click(object sender, EventArgs e)
+        {
+            if (selectedFigure is null) return;
+
+            var figureName = $"Custom figure {newFigureNumber}";
+            newFigureNumber++;
+
+            var creator = PrototypeCreator.GetInstance();
+            creator.prototype = selectedFigure;
+
+            creators[figureName] = creator;
+
+            var btn = new ToolStripButton()
+            {
+                Text = figureName
+            };
+
+            btn.Click += toolStripButton_Click;
+
+            toolStrip1.Items.Add(btn);
+        }
+
+        private void pnlDrawingPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                model.Manipulator.Drag(e.X - oldx, e.Y - oldy);
+                model.Manipulator.Update();
+                Refresh();
+            }
+
+            oldx = e.X;
+            oldy = e.Y;
         }
     }
 }

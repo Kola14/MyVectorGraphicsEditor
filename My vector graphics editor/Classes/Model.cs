@@ -10,11 +10,15 @@ namespace MyVectorGraphicsEditor.Classes
     {
         private List<Figure> figures = new List<Figure>();
 
-        public Manipulator Manipulator { get; set; }
+        public Manipulator Manipulator { get; private set; }
+
+        public Group TmpGroup { get; private set; }
 
         public Model()
         {
             Manipulator = new Manipulator();
+            TmpGroup = new Group();
+            Add(TmpGroup);
         }
 
         public void Add(Figure f)
@@ -23,6 +27,14 @@ namespace MyVectorGraphicsEditor.Classes
             if (figures.Contains(f)) return;
 
             figures.Add(f);
+        }
+
+        public void Remove(Figure f)
+        {
+            if (f is null) return;
+
+            figures.Remove(f);
+            Manipulator = new Manipulator();
         }
 
         public void Draw(Graphics g)
@@ -52,6 +64,11 @@ namespace MyVectorGraphicsEditor.Classes
             //Manipulator.Attach(null);
             Manipulator = new Manipulator();
             return null;
+        }
+
+        public void UnGroup()
+        {
+            TmpGroup = new Group();
         }
     }
 }

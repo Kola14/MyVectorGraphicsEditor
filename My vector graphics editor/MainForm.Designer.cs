@@ -37,6 +37,7 @@ namespace MyVectorGraphicsEditor
             this.tsbRectangle = new System.Windows.Forms.ToolStripButton();
             this.tsbEllipse = new System.Windows.Forms.ToolStripButton();
             this.btnSaveFigure = new System.Windows.Forms.Button();
+            this.btnUngroup = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -101,17 +102,31 @@ namespace MyVectorGraphicsEditor
             this.btnSaveFigure.UseVisualStyleBackColor = true;
             this.btnSaveFigure.Click += new System.EventHandler(this.btnSaveFigure_Click);
             // 
+            // btnUngroup
+            // 
+            this.btnUngroup.Location = new System.Drawing.Point(94, 39);
+            this.btnUngroup.Name = "btnUngroup";
+            this.btnUngroup.Size = new System.Drawing.Size(75, 23);
+            this.btnUngroup.TabIndex = 3;
+            this.btnUngroup.Text = "Ungroup";
+            this.btnUngroup.UseVisualStyleBackColor = true;
+            this.btnUngroup.Click += new System.EventHandler(this.btnUngroup_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnUngroup);
             this.Controls.Add(this.btnSaveFigure);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.pnlDrawingPanel);
+            this.KeyPreview = true;
             this.Name = "MainForm";
             this.Text = "My vector graphics editor";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -128,6 +143,7 @@ namespace MyVectorGraphicsEditor
         private System.Windows.Forms.ToolStripButton tsbRectangle;
         private System.Windows.Forms.ToolStripButton tsbEllipse;
         private System.Windows.Forms.Button btnSaveFigure;
+        private System.Windows.Forms.Button btnUngroup;
     }
 }
 

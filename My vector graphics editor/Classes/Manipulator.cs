@@ -179,6 +179,7 @@ namespace MyVectorGraphicsEditor.Classes
         public override void Draw(Graphics graphics)
         {
             if (Selected is null) return;
+            graphics.DrawRectangle(Pens.Red, X - 2, Y - 2, Width + 4, Height + 4);
             graphics.FillRectangle(Brushes.Red, X-5, Y-5, 5, 5);
             graphics.FillRectangle(Brushes.Red, X + Width, Y - 5, 5, 5);
             graphics.FillRectangle(Brushes.Red, X + Width, Y + Height, 5, 5);

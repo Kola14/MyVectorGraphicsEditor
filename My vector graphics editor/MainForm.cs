@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace MyVectorGraphicsEditor
 {
@@ -20,6 +21,7 @@ namespace MyVectorGraphicsEditor
         Figure selectedFigure;
         private int oldx, oldy;
         private int newFigureNumber = 0;
+        private bool ShiftPressed = false;
 
         Dictionary<string, FigureCreator> creators = new Dictionary<string, FigureCreator>();
 
@@ -43,13 +45,24 @@ namespace MyVectorGraphicsEditor
         {
             if (selectedCreator != null)
             {
+                model.UnGroup();
                 var figure = selectedCreator.Create();
                 figure.Move(e.X, e.Y);
                 model.Add(figure);
             }
             else
             {
-                selectedFigure = model.Select(e.X, e.Y);
+                if (ShiftPressed)
+                {
+                    selectedFigure = model.Select(e.X, e.Y);
+                    model.TmpGroup.Add(selectedFigure);
+                    model.Manipulator.Attach(model.TmpGroup);
+                }
+                else
+                {
+                    selectedFigure = model.Select(e.X, e.Y);
+                    model.UnGroup();
+                }
             }
         }
 
@@ -76,7 +89,15 @@ namespace MyVectorGraphicsEditor
             newFigureNumber++;
 
             var creator = PrototypeCreator.GetInstance();
-            creator.prototype = selectedFigure;
+
+            if (model.TmpGroup is null || model.TmpGroup.IsEmpty())
+            {
+                creator.prototype = selectedFigure.Clone();
+            }
+            else
+            {
+                creator.prototype = model.TmpGroup.Clone();
+            }
 
             creators[figureName] = creator;
 
@@ -88,6 +109,37 @@ namespace MyVectorGraphicsEditor
             btn.Click += toolStripButton_Click;
 
             toolStrip1.Items.Add(btn);
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey) 
+                ShiftPressed = true;
+        }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey) 
+                ShiftPressed = false;
+        }
+
+        private void btnUngroup_Click(object sender, EventArgs e)
+        {
+            if (selectedFigure is null) return;
+
+            if (selectedFigure.GetType() == typeof(Group))
+            {
+                Group group = (Group)selectedFigure;
+
+                foreach (var f in group.Figures)
+                {
+                    model.Add(f.Clone());
+                }
+            }
+
+            model.Remove(selectedFigure);
+
+            selectedFigure = null;
         }
 
         private void pnlDrawingPanel_MouseMove(object sender, MouseEventArgs e)

@@ -8,15 +8,21 @@ namespace MyVectorGraphicsEditor.Classes
 {
     class Model
     {
+        public enum Command
+        {
+            Add,
+            Remove
+        }
+
         private List<Figure> figures = new List<Figure>();
 
-        public Manipulator Manipulator { get; private set; }
+        public SuperManipulator Manipulator { get; private set; }
 
         public Group TmpGroup { get; private set; }
 
         public Model()
         {
-            Manipulator = new Manipulator();
+            Manipulator = new ConcSuperManipulator();
             TmpGroup = new Group();
             Add(TmpGroup);
         }
@@ -34,7 +40,7 @@ namespace MyVectorGraphicsEditor.Classes
             if (f is null) return;
 
             figures.Remove(f);
-            Manipulator = new Manipulator();
+            Manipulator = new ConcSuperManipulator();
         }
 
         public void Draw(Graphics g)
@@ -62,13 +68,23 @@ namespace MyVectorGraphicsEditor.Classes
                 }
             }
             //Manipulator.Attach(null);
-            Manipulator = new Manipulator();
+            Manipulator = new ConcSuperManipulator();
             return null;
         }
 
         public void UnGroup()
         {
             TmpGroup = new Group();
+        }
+
+        public void Save()
+        {
+
+        }
+
+        public void Restore()
+        {
+
         }
     }
 }

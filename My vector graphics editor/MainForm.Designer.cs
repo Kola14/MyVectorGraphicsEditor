@@ -51,18 +51,7 @@ namespace MyVectorGraphicsEditor
             this.pnlDrawingPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlDrawingPanel_Paint);
             this.pnlDrawingPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlDrawingPanel_MouseDown);
             this.pnlDrawingPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlDrawingPanel_MouseMove);
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tlbSelect,
-            this.tsbRectangle,
-            this.tsbEllipse});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 25);
-            this.toolStrip1.TabIndex = 1;
-            this.toolStrip1.Text = "toolStrip1";
+
             // 
             // tlbSelect
             // 

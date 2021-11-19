@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Xml;
 
 namespace MyVectorGraphicsEditor
 {
@@ -29,9 +30,7 @@ namespace MyVectorGraphicsEditor
         {
             InitializeComponent();
 
-            creators["Rectangle"] = RectangleCreator.GetInstance();
-            creators["Ellipse"] = EllipseCreator.GetInstance();
-            creators["Select"] = null;
+            LoadConfig();
 
             model = new Model();
         }
@@ -39,6 +38,47 @@ namespace MyVectorGraphicsEditor
         private void MainForm_Load(object sender, EventArgs e)
         {
            
+        }
+
+        private void LoadConfig()
+        {
+            //C: \Users\Kola\source\repos\MyVectorGraphicEditor\My vector graphics editor\Config.xml
+
+            creators["Select"] = null;
+            creators["Rectangle"] = RectangleCreator.GetInstance();
+            creators["Ellipse"] = EllipseCreator.GetInstance();
+
+            var creatorPath = "MyVectorGraphicsEditor.Classes.Figures.Creators.";
+
+            var config = new XmlDocument();
+
+            config.Load(@"C:\Users\Kola\source\repos\MyVectorGraphicEditor\My vector graphics editor\Config.xml");
+
+            var root = config.DocumentElement;
+
+            if (root is null) return;
+
+            foreach (XmlElement node in root)
+            {
+                var figure = node?.GetAttribute("name");
+
+                if (figure is null) return;
+
+                var creatorName = node?.FirstChild?.InnerText;
+                var fullCreatorName = creatorPath + creatorName;
+
+                var creator = (FigureCreator)Type.GetType(fullCreatorName)?.GetMethod("GetInstance")?.Invoke(null, null);
+
+                creators[figure] = creator;
+            }
+
+            foreach (var creator in creators)
+            {
+                ToolStripButton button = new ToolStripButton();
+                button.Text = creator.Key;
+                button.Click += toolStripButton_Click;
+                toolStrip1.Items.Add(button);
+            }
         }
 
         private void pnlDrawingPanel_MouseDown(object sender, MouseEventArgs e)

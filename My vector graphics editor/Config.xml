@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<figures>
+  <figure name="Select">
+    <creator>null</creator>
+  </figure>
+  <figure name="Rectangle">
+    <creator>RectangleCreator</creator>
+  </figure>
+  <figure name="Ellipse">
+    <creator>EllipseCreator</creator>
+  </figure>
+</figures>

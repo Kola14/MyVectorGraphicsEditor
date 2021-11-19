@@ -8,11 +8,7 @@ namespace MyVectorGraphicsEditor.Classes
 {
     class Model
     {
-        public enum Command
-        {
-            Add,
-            Remove
-        }
+        public (IMemento.Command, Figure) State { get; private set; }
 
         private List<Figure> figures = new List<Figure>();
 
@@ -31,13 +27,15 @@ namespace MyVectorGraphicsEditor.Classes
         {
             if (f is null) return;
             if (figures.Contains(f)) return;
-
+            State = (IMemento.Command.Add, f);
             figures.Add(f);
         }
 
         public void Remove(Figure f)
         {
             if (f is null) return;
+
+            State = (IMemento.Command.Remove, f);
 
             figures.Remove(f);
             Manipulator = new ConcSuperManipulator();
@@ -77,14 +75,14 @@ namespace MyVectorGraphicsEditor.Classes
             TmpGroup = new Group();
         }
 
-        public void Save()
+        public IMemento Save()
         {
-
+            return new Memento(State);
         }
 
-        public void Restore()
+        public void Restore(IMemento memento)
         {
-
+            State = memento.GetState();
         }
     }
 }

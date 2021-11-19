@@ -17,7 +17,7 @@ namespace MyVectorGraphicsEditor.Classes
 
         public void Backup()
         {
-            //mementos.Add(model.Save());
+            mementos.Add(model.Save());
         }
 
         public void Undo()
@@ -40,7 +40,7 @@ namespace MyVectorGraphicsEditor.Classes
 
             try
             {
-                //model.Restore(memento);
+                model.Restore(memento);
             }
             catch (Exception)
             {

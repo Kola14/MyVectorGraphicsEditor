@@ -19,6 +19,7 @@ namespace MyVectorGraphicsEditor
     {
         FigureCreator selectedCreator;
         Model model;
+        private Caretaker caretaker;
         Figure selectedFigure;
         private int oldx, oldy;
         private int newFigureNumber = 0;
@@ -33,6 +34,7 @@ namespace MyVectorGraphicsEditor
             LoadConfig();
 
             model = new Model();
+            caretaker = new Caretaker(model);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -42,12 +44,6 @@ namespace MyVectorGraphicsEditor
 
         private void LoadConfig()
         {
-            //C: \Users\Kola\source\repos\MyVectorGraphicEditor\My vector graphics editor\Config.xml
-
-            creators["Select"] = null;
-            creators["Rectangle"] = RectangleCreator.GetInstance();
-            creators["Ellipse"] = EllipseCreator.GetInstance();
-
             var creatorPath = "MyVectorGraphicsEditor.Classes.Figures.Creators.";
 
             var config = new XmlDocument();
@@ -74,7 +70,7 @@ namespace MyVectorGraphicsEditor
 
             foreach (var creator in creators)
             {
-                ToolStripButton button = new ToolStripButton();
+                var button = new ToolStripButton();
                 button.Text = creator.Key;
                 button.Click += toolStripButton_Click;
                 toolStrip1.Items.Add(button);
@@ -89,6 +85,7 @@ namespace MyVectorGraphicsEditor
                 var figure = selectedCreator.Create();
                 figure.Move(e.X, e.Y);
                 model.Add(figure);
+                caretaker.Backup();
             }
             else
             {
@@ -155,6 +152,12 @@ namespace MyVectorGraphicsEditor
         {
             if (e.KeyCode == Keys.ShiftKey) 
                 ShiftPressed = true;
+
+            if (ModifierKeys.HasFlag(Keys.Control) && e.KeyCode == Keys.Z)
+            {
+                caretaker.Undo();
+                Refresh();
+            }
         }
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)

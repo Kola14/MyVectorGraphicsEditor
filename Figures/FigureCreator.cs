@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Figures;
 
-namespace MyVectorGraphicsEditor.Classes.Figures
+namespace Figures
 {
-    abstract class FigureCreator
+    public abstract class FigureCreator
     {
         public virtual Figure Create()
         {

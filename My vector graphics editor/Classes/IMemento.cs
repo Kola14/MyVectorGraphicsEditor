@@ -1,4 +1,6 @@
-﻿namespace MyVectorGraphicsEditor.Classes
+﻿using Figures;
+
+namespace MyVectorGraphicsEditor.Classes
 {
     public interface IMemento
     {

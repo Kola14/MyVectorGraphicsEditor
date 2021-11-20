@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using Figures;
 
 namespace MyVectorGraphicsEditor.Classes.Handlers
 {

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Linq;
+using Figures;
 using MyVectorGraphicsEditor.Classes.Figures;
 
 namespace MyVectorGraphicsEditor.Classes
@@ -57,13 +59,10 @@ namespace MyVectorGraphicsEditor.Classes
                 return Manipulator.Selected;
             }
 
-            foreach (var f in figures)
+            foreach (var f in figures.Where(f => f.Touch(x, y)))
             {
-                if (f.Touch(x, y))
-                {
-                    Manipulator.Attach(f);
-                    return f;
-                }
+                Manipulator.Attach(f);
+                return f;
             }
             //Manipulator.Attach(null);
             Manipulator = new ConcSuperManipulator();

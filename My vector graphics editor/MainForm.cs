@@ -12,20 +12,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Xml;
+using Figures;
 
 namespace MyVectorGraphicsEditor
 {
     public partial class MainForm : Form
     {
-        FigureCreator selectedCreator;
-        Model model;
-        private Caretaker caretaker;
-        Figure selectedFigure;
-        private int oldx, oldy;
-        private int newFigureNumber = 0;
-        private bool ShiftPressed = false;
+        private FigureCreator _selectedCreator;
+        private Model _model;
+        private Caretaker _caretaker;
+        private Figure _selectedFigure;
+        private int _oldx, _oldy;
+        private int _newFigureNumber = 0;
+        private bool _shiftPressed = false;
 
-        Dictionary<string, FigureCreator> creators = new Dictionary<string, FigureCreator>();
+        private Dictionary<string, FigureCreator> _creators = new Dictionary<string, FigureCreator>();
 
         public MainForm()
         {
@@ -33,8 +34,8 @@ namespace MyVectorGraphicsEditor
 
             LoadConfig();
 
-            model = new Model();
-            caretaker = new Caretaker(model);
+            _model = new Model();
+            _caretaker = new Caretaker(_model);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -44,6 +45,8 @@ namespace MyVectorGraphicsEditor
 
         private void LoadConfig()
         {
+            //TODO change these ugly strings
+            //TODO make the creatorPath self buildable
             var creatorPath = "MyVectorGraphicsEditor.Classes.Figures.Creators.";
 
             var config = new XmlDocument();
@@ -65,10 +68,10 @@ namespace MyVectorGraphicsEditor
 
                 var creator = (FigureCreator)Type.GetType(fullCreatorName)?.GetMethod("GetInstance")?.Invoke(null, null);
 
-                creators[figure] = creator;
+                _creators[figure] = creator;
             }
 
-            foreach (var creator in creators)
+            foreach (var creator in _creators)
             {
                 var button = new ToolStripButton();
                 button.Text = creator.Key;
@@ -79,26 +82,26 @@ namespace MyVectorGraphicsEditor
 
         private void pnlDrawingPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            if (selectedCreator != null)
+            if (_selectedCreator != null)
             {
-                model.UnGroup();
-                var figure = selectedCreator.Create();
+                _model.UnGroup();
+                var figure = _selectedCreator.Create();
                 figure.Move(e.X, e.Y);
-                model.Add(figure);
-                caretaker.Backup();
+                _model.Add(figure);
+                _caretaker.Backup();
             }
             else
             {
-                if (ShiftPressed)
+                if (_shiftPressed)
                 {
-                    selectedFigure = model.Select(e.X, e.Y);
-                    model.TmpGroup.Add(selectedFigure);
-                    model.Manipulator.Attach(model.TmpGroup);
+                    _selectedFigure = _model.Select(e.X, e.Y);
+                    _model.TmpGroup.Add(_selectedFigure);
+                    _model.Manipulator.Attach(_model.TmpGroup);
                 }
                 else
                 {
-                    selectedFigure = model.Select(e.X, e.Y);
-                    model.UnGroup();
+                    _selectedFigure = _model.Select(e.X, e.Y);
+                    _model.UnGroup();
                 }
             }
         }
@@ -106,37 +109,37 @@ namespace MyVectorGraphicsEditor
         private void toolStripButton_Click(Object sender, EventArgs e)
         {
             var key = (sender as ToolStripButton)?.Text;
-            if (creators.Keys.Contains(key))
+            if (_creators.Keys.Contains(key))
             {
-                if (key != null) selectedCreator = creators[key];
+                if (key != null) _selectedCreator = _creators[key];
             }
         }
 
         private void pnlDrawingPanel_Paint(object sender, PaintEventArgs e)
         {
-            model.Draw(e.Graphics);
+            _model.Draw(e.Graphics);
             Refresh();
         }
 
         private void btnSaveFigure_Click(object sender, EventArgs e)
         {
-            if (selectedFigure is null) return;
+            if (_selectedFigure is null) return;
 
-            var figureName = $"Custom figure {newFigureNumber}";
-            newFigureNumber++;
+            var figureName = $"Custom figure {_newFigureNumber}";
+            _newFigureNumber++;
 
             var creator = PrototypeCreator.GetInstance();
 
-            if (model.TmpGroup is null || model.TmpGroup.IsEmpty())
+            if (_model.TmpGroup is null || _model.TmpGroup.IsEmpty())
             {
-                creator.prototype = selectedFigure.Clone();
+                creator.prototype = _selectedFigure.Clone();
             }
             else
             {
-                creator.prototype = model.TmpGroup.Clone();
+                creator.prototype = _model.TmpGroup.Clone();
             }
 
-            creators[figureName] = creator;
+            _creators[figureName] = creator;
 
             var btn = new ToolStripButton()
             {
@@ -151,11 +154,11 @@ namespace MyVectorGraphicsEditor
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.ShiftKey) 
-                ShiftPressed = true;
+                _shiftPressed = true;
 
             if (ModifierKeys.HasFlag(Keys.Control) && e.KeyCode == Keys.Z)
             {
-                caretaker.Undo();
+                _caretaker.Undo();
                 Refresh();
             }
         }
@@ -163,39 +166,39 @@ namespace MyVectorGraphicsEditor
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.ShiftKey) 
-                ShiftPressed = false;
+                _shiftPressed = false;
         }
 
         private void btnUngroup_Click(object sender, EventArgs e)
         {
-            if (selectedFigure is null) return;
+            if (_selectedFigure is null) return;
 
-            if (selectedFigure.GetType() == typeof(Group))
+            if (_selectedFigure.GetType() == typeof(Group))
             {
-                Group group = (Group)selectedFigure;
+                var group = (Group)_selectedFigure;
 
                 foreach (var f in group.Figures)
                 {
-                    model.Add(f.Clone());
+                    _model.Add(f.Clone());
                 }
             }
 
-            model.Remove(selectedFigure);
+            _model.Remove(_selectedFigure);
 
-            selectedFigure = null;
+            _selectedFigure = null;
         }
 
         private void pnlDrawingPanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                model.Manipulator.Drag(e.X - oldx, e.Y - oldy);
-                model.Manipulator.Update();
+                _model.Manipulator.Drag(e.X - _oldx, e.Y - _oldy);
+                _model.Manipulator.Update();
                 Refresh();
             }
 
-            oldx = e.X;
-            oldy = e.Y;
+            _oldx = e.X;
+            _oldy = e.Y;
         }
     }
 }

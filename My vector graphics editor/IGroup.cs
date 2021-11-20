@@ -1,4 +1,5 @@
-﻿using MyVectorGraphicsEditor.Classes;
+﻿using Figures;
+using MyVectorGraphicsEditor.Classes;
 
 namespace MyVectorGraphicsEditor
 {

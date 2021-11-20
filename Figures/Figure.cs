@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace MyVectorGraphicsEditor.Classes
+namespace Figures
 {
     public abstract class Figure
     {

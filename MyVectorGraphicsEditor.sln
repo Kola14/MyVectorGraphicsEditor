@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVectorGraphicsEditor", "My vector graphics editor\MyVectorGraphicsEditor.csproj", "{81B3AE46-AE5C-4C6C-8ABA-7683FB7B90AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyVectorGraphicsEditor", "My vector graphics editor\MyVectorGraphicsEditor.csproj", "{81B3AE46-AE5C-4C6C-8ABA-7683FB7B90AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figures", "Figures\Figures.csproj", "{79AEBBF4-4283-43F8-991C-14345C4CE67C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{81B3AE46-AE5C-4C6C-8ABA-7683FB7B90AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81B3AE46-AE5C-4C6C-8ABA-7683FB7B90AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81B3AE46-AE5C-4C6C-8ABA-7683FB7B90AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79AEBBF4-4283-43F8-991C-14345C4CE67C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79AEBBF4-4283-43F8-991C-14345C4CE67C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79AEBBF4-4283-43F8-991C-14345C4CE67C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79AEBBF4-4283-43F8-991C-14345C4CE67C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

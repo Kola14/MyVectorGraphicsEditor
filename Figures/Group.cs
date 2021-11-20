@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 
-namespace MyVectorGraphicsEditor.Classes
+namespace Figures
 {
-    class Group: Figure
+    public class Group: Figure
     {
         private List<Figure> figures = new List<Figure>();
 

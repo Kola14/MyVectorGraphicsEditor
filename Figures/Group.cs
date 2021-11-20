@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Figures
 {
+    [Serializable]
     public class Group: Figure
     {
         private List<Figure> figures = new List<Figure>();

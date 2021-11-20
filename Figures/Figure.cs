@@ -2,36 +2,33 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using Figures;
 
 namespace Figures
 {
+    [Serializable]
     public abstract class Figure
     {
-        private float x;
-        private float y;
-        private float width;
-        private float height;
-               
-        public float X { get { return x; } }
-        public float Y { get { return y; } }
-        public float Width { get { return width; } }
-        public float Height { get { return height; } }
+        public float X { get; private set; }
+        public float Y { get; private set; }
+        public float Width { get; private set; }
+        public float Height { get; private set; }
 
         public virtual void Move(float newX, float newY)
         {
-            x = newX;
-            y = newY;
+            X = newX;
+            Y = newY;
         }
 
         public virtual void Resize(float newWidth, float newHeight)
         {
-            width = newWidth;
-            height = newHeight;
+            Width = newWidth;
+            Height = newHeight;
         }
 
         public virtual bool Touch(float ax, float ay)
         {
-            return ax >= x && ax <= x + width && ay >= y && ay <= y + height;
+            return ax >= X && ax <= X + Width && ay >= Y && ay <= Y + Height;
         }
 
         public virtual Figure Clone()

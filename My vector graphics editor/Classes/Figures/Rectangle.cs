@@ -6,6 +6,7 @@ using Figures;
 
 namespace MyVectorGraphicsEditor.Classes.Figures
 {
+    [Serializable]
     class Rectangle : Figure
     {
         public override Figure Clone()

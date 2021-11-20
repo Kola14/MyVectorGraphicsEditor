@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
 <figures>
-  <figure name="Select">
+  <figure name="Select" isSerialized="false">
     <creator>null</creator>
   </figure>
-  <figure name="Rectangle">
+  <figure name="Rectangle" isSerialized="false">
     <creator>RectangleCreator</creator>
   </figure>
-  <figure name="Ellipse">
+  <figure name="Ellipse" isSerialized="false">
     <creator>EllipseCreator</creator>
   </figure>
 </figures>

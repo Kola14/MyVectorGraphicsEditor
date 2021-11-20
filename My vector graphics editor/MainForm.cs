@@ -6,7 +6,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,8 +26,8 @@ namespace MyVectorGraphicsEditor
         private Caretaker _caretaker;
         private Figure _selectedFigure;
         private int _oldx, _oldy;
-        private int _newFigureNumber = 0;
-        private bool _shiftPressed = false;
+        private int _newFigureNumber;
+        private bool _shiftPressed;
 
         private Dictionary<string, FigureCreator> _creators = new Dictionary<string, FigureCreator>();
 
@@ -65,9 +68,16 @@ namespace MyVectorGraphicsEditor
 
                 var creatorName = node?.FirstChild?.InnerText;
                 var fullCreatorName = creatorPath + creatorName;
-
-                var creator = (FigureCreator)Type.GetType(fullCreatorName)?.GetMethod("GetInstance")?.Invoke(null, null);
-
+                FigureCreator creator;
+                if (node?.GetAttribute("isSerialized") == "false")
+                {
+                    creator = (FigureCreator)Type.GetType(fullCreatorName)?.GetMethod("GetInstance")?.Invoke(null, null);
+                }
+                else
+                {
+                    //TODO: finish up creator deserialization
+                    creator = DeserializeCreator(figure + "something");
+                }
                 _creators[figure] = creator;
             }
 
@@ -125,7 +135,7 @@ namespace MyVectorGraphicsEditor
         {
             if (_selectedFigure is null) return;
 
-            var figureName = $"Custom figure {_newFigureNumber}";
+            var figureName = $"Custom_figure_{_newFigureNumber}";
             _newFigureNumber++;
 
             var creator = PrototypeCreator.GetInstance();
@@ -141,14 +151,43 @@ namespace MyVectorGraphicsEditor
 
             _creators[figureName] = creator;
 
-            var btn = new ToolStripButton()
-            {
-                Text = figureName
-            };
+            //TODO: serialization and XML config edit
 
+            //Needs interface
+
+            var btn = new ToolStripButton();
+            btn.Text = figureName;
             btn.Click += toolStripButton_Click;
 
             toolStrip1.Items.Add(btn);
+
+            SerializeCreator(creator, figureName);
+        }
+
+        private void SerializeCreator(FigureCreator creator, string figureName)
+        {
+            var formatter = new BinaryFormatter();
+
+            using (var fileStream = new FileStream(figureName, FileMode.Create))
+            {
+                formatter.Serialize(fileStream, creator);
+
+                fileStream.Close();
+            }
+        }
+
+        private FigureCreator DeserializeCreator(string fileName)
+        {
+            var formatter = new BinaryFormatter();
+            FigureCreator creator;
+
+            using (var fileStream = new FileStream(fileName, FileMode.Open))
+            {
+                creator = (FigureCreator)formatter.Deserialize(fileStream);
+                fileStream.Close();
+            }
+
+            return creator;
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)

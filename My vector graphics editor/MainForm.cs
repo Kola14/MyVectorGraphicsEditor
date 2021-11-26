@@ -1,20 +1,8 @@
 ﻿using MyVectorGraphicsEditor.Classes;
 using MyVectorGraphicsEditor.Classes.Figures;
-using MyVectorGraphicsEditor.Classes.Figures.Creators;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using System.Xml;
 using Figures;
 
 namespace MyVectorGraphicsEditor
@@ -29,7 +17,7 @@ namespace MyVectorGraphicsEditor
         private int _newFigureNumber;
         private bool _shiftPressed;
 
-        private Dictionary<string, FigureCreator> _creators = new Dictionary<string, FigureCreator>();
+        private CreatorsManager manager = new CreatorsManager();
 
         public MainForm()
         {
@@ -48,40 +36,9 @@ namespace MyVectorGraphicsEditor
 
         private void LoadConfig()
         {
-            //TODO change these ugly strings
-            //TODO make the creatorPath self buildable
-            var creatorPath = "MyVectorGraphicsEditor.Classes.Figures.Creators.";
+            manager.LoadConfig();
 
-            var config = new XmlDocument();
-
-            config.Load(@"C:\Users\Kola\source\repos\MyVectorGraphicEditor\My vector graphics editor\Config.xml");
-
-            var root = config.DocumentElement;
-
-            if (root is null) return;
-
-            foreach (XmlElement node in root)
-            {
-                var figure = node?.GetAttribute("name");
-
-                if (figure is null) return;
-
-                var creatorName = node?.FirstChild?.InnerText;
-                var fullCreatorName = creatorPath + creatorName;
-                FigureCreator creator;
-                if (node?.GetAttribute("isSerialized") == "false")
-                {
-                    creator = (FigureCreator)Type.GetType(fullCreatorName)?.GetMethod("GetInstance")?.Invoke(null, null);
-                }
-                else
-                {
-                    //TODO: finish up creator deserialization
-                    creator = DeserializeCreator(figure + "something");
-                }
-                _creators[figure] = creator;
-            }
-
-            foreach (var creator in _creators)
+            foreach (var creator in manager.Creators)
             {
                 var button = new ToolStripButton();
                 button.Text = creator.Key;
@@ -119,9 +76,9 @@ namespace MyVectorGraphicsEditor
         private void toolStripButton_Click(Object sender, EventArgs e)
         {
             var key = (sender as ToolStripButton)?.Text;
-            if (_creators.Keys.Contains(key))
+            if (manager.Creators.Keys.Contains(key))
             {
-                if (key != null) _selectedCreator = _creators[key];
+                if (key != null) _selectedCreator = manager.Creators[key];
             }
         }
 
@@ -149,11 +106,9 @@ namespace MyVectorGraphicsEditor
                 creator.prototype = _model.TmpGroup.Clone();
             }
 
-            _creators[figureName] = creator;
+            manager.AddCreator(creator, figureName);
 
             //TODO: serialization and XML config edit
-
-            //Needs interface
 
             var btn = new ToolStripButton();
             btn.Text = figureName;
@@ -161,33 +116,7 @@ namespace MyVectorGraphicsEditor
 
             toolStrip1.Items.Add(btn);
 
-            SerializeCreator(creator, figureName);
-        }
-
-        private void SerializeCreator(FigureCreator creator, string figureName)
-        {
-            var formatter = new BinaryFormatter();
-
-            using (var fileStream = new FileStream(figureName, FileMode.Create))
-            {
-                formatter.Serialize(fileStream, creator);
-
-                fileStream.Close();
-            }
-        }
-
-        private FigureCreator DeserializeCreator(string fileName)
-        {
-            var formatter = new BinaryFormatter();
-            FigureCreator creator;
-
-            using (var fileStream = new FileStream(fileName, FileMode.Open))
-            {
-                creator = (FigureCreator)formatter.Deserialize(fileStream);
-                fileStream.Close();
-            }
-
-            return creator;
+            manager.SaveCreator(creator, figureName);
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)

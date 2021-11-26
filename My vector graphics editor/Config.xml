@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?> 
+﻿<?xml version="1.0" encoding="utf-8"?>
 <figures>
   <figure name="Select" isSerialized="false">
     <creator>null</creator>
@@ -8,5 +8,8 @@
   </figure>
   <figure name="Ellipse" isSerialized="false">
     <creator>EllipseCreator</creator>
+  </figure>
+  <figure name="Custom_figure_0" isSerialized="true">
+    <creator>Custom_figure_0</creator>
   </figure>
 </figures>

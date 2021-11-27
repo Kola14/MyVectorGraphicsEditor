@@ -46,7 +46,6 @@ namespace MyVectorGraphicsEditor.Classes
                 else
                 {
                     fullCreatorName = customCreatorPath + creatorName;
-                    //TODO: finish up creator deserialization
                     creator = DeserializeCreator(fullCreatorName);
                 }
                 Creators[figure] = creator;

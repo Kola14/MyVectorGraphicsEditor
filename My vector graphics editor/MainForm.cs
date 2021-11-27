@@ -108,8 +108,6 @@ namespace MyVectorGraphicsEditor
 
             manager.AddCreator(creator, figureName);
 
-            //TODO: serialization and XML config edit
-
             var btn = new ToolStripButton();
             btn.Text = figureName;
             btn.Click += toolStripButton_Click;
@@ -154,6 +152,17 @@ namespace MyVectorGraphicsEditor
             _model.Remove(_selectedFigure);
 
             _selectedFigure = null;
+        }
+
+        private void btnToCustom_Click(object sender, EventArgs e)
+        {
+            if (_selectedFigure is null) return;
+
+            if (_selectedFigure.GetType() == typeof(Group)) return;
+
+            _model.ToCustom(_selectedFigure);
+
+            Refresh();
         }
 
         private void pnlDrawingPanel_MouseMove(object sender, MouseEventArgs e)

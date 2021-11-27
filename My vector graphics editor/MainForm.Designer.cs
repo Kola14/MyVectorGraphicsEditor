@@ -38,7 +38,7 @@ namespace MyVectorGraphicsEditor
             this.tsbEllipse = new System.Windows.Forms.ToolStripButton();
             this.btnSaveFigure = new System.Windows.Forms.Button();
             this.btnUngroup = new System.Windows.Forms.Button();
-            this.toolStrip1.SuspendLayout();
+            this.btnToCustom = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pnlDrawingPanel
@@ -51,7 +51,13 @@ namespace MyVectorGraphicsEditor
             this.pnlDrawingPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlDrawingPanel_Paint);
             this.pnlDrawingPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlDrawingPanel_MouseDown);
             this.pnlDrawingPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlDrawingPanel_MouseMove);
-
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(800, 25);
+            this.toolStrip1.TabIndex = 4;
             // 
             // tlbSelect
             // 
@@ -101,11 +107,22 @@ namespace MyVectorGraphicsEditor
             this.btnUngroup.UseVisualStyleBackColor = true;
             this.btnUngroup.Click += new System.EventHandler(this.btnUngroup_Click);
             // 
+            // btnToCustom
+            // 
+            this.btnToCustom.Location = new System.Drawing.Point(711, 38);
+            this.btnToCustom.Name = "btnToCustom";
+            this.btnToCustom.Size = new System.Drawing.Size(75, 23);
+            this.btnToCustom.TabIndex = 5;
+            this.btnToCustom.Text = "to custom";
+            this.btnToCustom.UseVisualStyleBackColor = true;
+            this.btnToCustom.Click += new System.EventHandler(this.btnToCustom_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnToCustom);
             this.Controls.Add(this.btnUngroup);
             this.Controls.Add(this.btnSaveFigure);
             this.Controls.Add(this.toolStrip1);
@@ -116,8 +133,6 @@ namespace MyVectorGraphicsEditor
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -133,6 +148,7 @@ namespace MyVectorGraphicsEditor
         private System.Windows.Forms.ToolStripButton tsbEllipse;
         private System.Windows.Forms.Button btnSaveFigure;
         private System.Windows.Forms.Button btnUngroup;
+        private System.Windows.Forms.Button btnToCustom;
     }
 }
 

@@ -10,20 +10,13 @@ namespace MyVectorGraphicsEditor.Classes.Figures
     {
         public FigurePoint(float x, float y)
         {
-            base.Move(x, y);
-            base.Resize(1,1);
+            Move(x, y);
+            Resize(7,7);
         }
 
         public override void Draw(Graphics graphics)
         {
-            
+            graphics.FillRectangle(Brushes.Black, X - 3, Y - 3, Width, Height);
         }
-
-        public override void Resize(float newWidth, float newHeight)
-        {
-           
-        }
-
-        
     }
 }

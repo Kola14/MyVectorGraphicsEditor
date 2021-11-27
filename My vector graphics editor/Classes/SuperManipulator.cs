@@ -9,9 +9,9 @@ namespace MyVectorGraphicsEditor.Classes
     {
         protected List<Handler> handlers = new List<Handler>();
 
-        public Figure Selected { get; private set; }
+        public Figure Selected { get; protected set; }
 
-        public Handler ActiveHandler { get; internal set; }
+        public Handler ActiveHandler { get; protected set; }
 
         public override void Draw(Graphics graphics)
         {
@@ -60,7 +60,7 @@ namespace MyVectorGraphicsEditor.Classes
             Update();
         }
 
-        public void Update()
+        public virtual void Update()
         {
             if (Selected is null) return;
             Selected.Move(X, Y);

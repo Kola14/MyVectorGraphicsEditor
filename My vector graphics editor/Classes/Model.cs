@@ -58,12 +58,46 @@ namespace MyVectorGraphicsEditor.Classes
             {
                 return Manipulator.Selected;
             }
+            
+            //foreach (var f in figures)
+            //{
+            //    if (f.GetType() == typeof(CustomFigure))
+            //    {
+            //        var custom = (CustomFigure)f;
+
+            //        foreach (var point in custom.Points.Where(point => point.Touch(x, y)))
+            //        {
+            //            Manipulator = new CustomSuperManipulator();
+            //            Manipulator.Attach(custom);
+            //            return f;
+            //        }
+            //    }
+
+            //    if (f.Touch(x, y))
+            //    {
+            //        Manipulator.Attach(f);
+            //        return f;
+            //    }
+            //}
 
             foreach (var f in figures.Where(f => f.Touch(x, y)))
             {
+                //if (f.GetType() == typeof(CustomFigure)
+                //    || f.GetType() == typeof(FigurePoint)
+                //    && Manipulator.GetType() != typeof(CustomSuperManipulator)) Manipulator = new CustomSuperManipulator();
+
+                if (f.GetType() == typeof(CustomFigure))
+                {
+
+                    Manipulator = new CustomSuperManipulator();
+                    Manipulator.Attach(f);
+                    return f;
+                }
+                
                 Manipulator.Attach(f);
                 return f;
             }
+
             //Manipulator.Attach(null);
             Manipulator = new ConcSuperManipulator();
             return null;
@@ -82,6 +116,21 @@ namespace MyVectorGraphicsEditor.Classes
         public void Restore(IMemento memento)
         {
             State = memento.GetState();
+        }
+
+        public void ToCustom(Figure f)
+        {
+            if (f is null) return;
+
+            Manipulator = new CustomSuperManipulator();
+
+            CustomFigure custom = new CustomFigure(f);
+            Remove(f);
+            Add(custom);
+
+            Manipulator.Attach(custom);
+
+            Remove(f);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using Figures;
 using MyVectorGraphicsEditor.Classes.Figures;
 
@@ -58,34 +59,9 @@ namespace MyVectorGraphicsEditor.Classes
             {
                 return Manipulator.Selected;
             }
-            
-            //foreach (var f in figures)
-            //{
-            //    if (f.GetType() == typeof(CustomFigure))
-            //    {
-            //        var custom = (CustomFigure)f;
-
-            //        foreach (var point in custom.Points.Where(point => point.Touch(x, y)))
-            //        {
-            //            Manipulator = new CustomSuperManipulator();
-            //            Manipulator.Attach(custom);
-            //            return f;
-            //        }
-            //    }
-
-            //    if (f.Touch(x, y))
-            //    {
-            //        Manipulator.Attach(f);
-            //        return f;
-            //    }
-            //}
 
             foreach (var f in figures.Where(f => f.Touch(x, y)))
             {
-                //if (f.GetType() == typeof(CustomFigure)
-                //    || f.GetType() == typeof(FigurePoint)
-                //    && Manipulator.GetType() != typeof(CustomSuperManipulator)) Manipulator = new CustomSuperManipulator();
-
                 if (f.GetType() == typeof(CustomFigure))
                 {
 
